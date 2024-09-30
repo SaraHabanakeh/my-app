@@ -1,0 +1,106 @@
+.App {
+  text-align: center;
+}
+
+.App Link{
+  text-decoration: none;
+  gap: 20px;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #310856;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.doc {
+  text-decoration: none;
+  color: black;
+  font-family: 'Times New Roman', Times, serif, Impact, 'Arial Narrow Bold', sans-serif, Impact 'Arial Narrow Bold', sans-serif;
+}
+
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  margin-top: 20px;
+  background-color: #3d1a5d;
+  border: 1px solid #6b577d;
+  border-radius: 5px;
+}
+
+.button1 {
+  display: inline-block;
+  padding: 5px 5px;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  margin-top: 20px;
+  background-color: #7d7c7e;
+  border: 1px solid #6b577d;
+  border-radius: 5px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  margin: 0 auto;
+}
+
+label {
+  margin-bottom: 10px;
+}
+
+input[type="text"], textarea {
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  border: 1px solid #6b577d;
+}
+
+button:hover {
+  background-color: #5a4a6a;  /* Darker color on hover */
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+

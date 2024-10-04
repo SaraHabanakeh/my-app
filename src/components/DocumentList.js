@@ -9,15 +9,16 @@ function DocumentList() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get('http://localhost:1337/');
-        console.log('Response:', response);
-        setDocuments(response.data);
+        const response = await axios.get('http://localhost:8585/posts/');
+        console.log('Response:', response.data);
+        setDocuments(response.data.data);
+        console.log(documents);
       } catch (error) {
         console.error('Error fetching documents:', error);
       }
     }
     fetchData();
-  }, []);
+  }, [documents]);
 
   return (
     <div>

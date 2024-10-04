@@ -9,7 +9,7 @@ function DocumentList() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get('http://localhost:8585/posts/');
+        const response = await axios.get('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/');
         console.log('Response:', response.data);
         setDocuments(response.data.data);
         console.log(documents);

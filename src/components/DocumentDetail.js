@@ -12,7 +12,7 @@ function DocumentDetail() {
   useEffect(() => {
     async function fetchDocument() {
       try {
-        const response = await axios.get(`http://localhost:8585/posts/${id}`);
+        const response = await axios.get(`https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/${id}`);
         console.log('Response:', response);
 
         setDocument(response.data);

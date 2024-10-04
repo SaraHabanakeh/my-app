@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import DocumentList from './components/DocumentList';
 import DocumentDetail from './components/DocumentDetail';
 import DocumentForm from './components/DocumentForm';
@@ -10,14 +10,14 @@ function App() {
         <div className="App">
             <header className="App-header"></header>
 
-            <BrowserRouter>
+            <Router>
                 <Routes>
                     <Route path="/" element={<DocumentList />} />
                     <Route path="/document/:id" element={<DocumentDetail />} />
                     <Route path="/new" element={<DocumentForm />} />
                     <Route path="/edit/:id" element={<DocumentForm />} />
                 </Routes>
-            </BrowserRouter>
+            </Router>
 
         </div>
     );

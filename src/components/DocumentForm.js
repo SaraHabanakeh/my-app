@@ -13,7 +13,7 @@ function DocumentForm() {
     if (id) {
       async function fetchData() {
         try {
-          const response = await axios.get(`http://localhost:8585/posts/${id}`);
+          const response = await axios.get(`https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/${id}`);
           setTitle(response.data.title);
           setContent(response.data.content);
         } catch (error) {

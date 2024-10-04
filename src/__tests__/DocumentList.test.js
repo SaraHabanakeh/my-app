@@ -28,7 +28,7 @@ describe('DocumentList', () => {
       { _id: '66f34ed981b7b1e257d908fd', title: 'Document 4', content: 'This is Document 4' },
     ];
 
-    mock.onGet('http://localhost:1337/').reply(200, documents);
+    mock.onGet('http://localhost:8585/posts/').reply(200, {data:documents});
 
     render(
       <MemoryRouter>
@@ -47,7 +47,7 @@ describe('DocumentList', () => {
   it('displays error message when data fetching fails', async () => {
     const mock = new MockAdapter(axios);
   
-    mock.onGet('http://localhost:1337/').reply(500);
+    mock.onGet('http://localhost:8585/posts/').reply(500);
   
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
   

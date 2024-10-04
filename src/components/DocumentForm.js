@@ -13,7 +13,7 @@ function DocumentForm() {
     if (id) {
       async function fetchData() {
         try {
-          const response = await axios.get(`http://localhost:1337/${id}`);
+          const response = await axios.get(`http://localhost:8585/posts/${id}`);
           setTitle(response.data.title);
           setContent(response.data.content);
         } catch (error) {
@@ -30,9 +30,9 @@ function DocumentForm() {
 
     try {
       if (id) {
-        await axios.put(`http://localhost:1337/${id}`, documentData);
+        await axios.post(`http://localhost:8585/posts/${id}`, documentData);
       } else {
-        await axios.post(`http://localhost:1337/new`, documentData);
+        await axios.post(`http://localhost:8585/posts/new`, documentData);
       }
       navigate('/');
     } catch (error) {

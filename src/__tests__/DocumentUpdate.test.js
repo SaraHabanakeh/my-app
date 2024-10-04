@@ -12,13 +12,13 @@ describe('DocumentForm', () => {
     it('loads and updates existing document when Save button is clicked', async () => {
       const documentId = '123';
   
-      mock.onGet(`http://localhost:1337/${documentId}`).reply(200, {
+      mock.onGet(`http://localhost:8585/posts/${documentId}`).reply(200, {
         title: 'Original Title',
         content: 'Original Content',
       });
   
 
-      mock.onPut(`http://localhost:1337/${documentId}`).reply(200, {
+      mock.onPost(`http://localhost:8585/posts/${documentId}`).reply(200, {
         title: 'Updated Title',
         content: 'Updated Content',
       });
@@ -43,10 +43,10 @@ describe('DocumentForm', () => {
       fireEvent.click(screen.getByRole('button', { name: /Save/i }));
   
       await waitFor(() => {
-        expect(mock.history.put.length).toBe(1);
+        expect(mock.history.post.length).toBe(1);
       });
 
-      expect(mock.history.put[0].data).toEqual(JSON.stringify({
+      expect(mock.history.post[0].data).toEqual(JSON.stringify({
         title: 'Updated Title',
         content: 'Updated Content',
       }));

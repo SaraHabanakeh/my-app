@@ -26,7 +26,7 @@ describe('DocumentForm', () => {
 
   it('submits new data when Save button is clicked', async () => {
 
-    mock.onPost('http://localhost:1337/new').reply(200, {
+    mock.onPost('http://localhost:8585/posts/new').reply(200, {
       title: 'Test Title',
       content: 'Test Content',
     });

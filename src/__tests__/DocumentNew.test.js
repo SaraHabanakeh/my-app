@@ -26,7 +26,7 @@ describe('DocumentForm', () => {
 
   it('submits new data when Save button is clicked', async () => {
 
-    mock.onPost('http://localhost:8585/posts/new').reply(200, {
+    mock.onPost('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/new').reply(200, {
       title: 'Test Title',
       content: 'Test Content',
     });

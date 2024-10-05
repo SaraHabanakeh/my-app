@@ -12,13 +12,13 @@ describe('DocumentForm', () => {
     it('loads and updates existing document when Save button is clicked', async () => {
       const documentId = '123';
   
-      mock.onGet(`http://localhost:8585/posts/${documentId}`).reply(200, {
+      mock.onGet(`https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/${documentId}`).reply(200, {
         title: 'Original Title',
         content: 'Original Content',
       });
   
 
-      mock.onPost(`http://localhost:8585/posts/${documentId}`).reply(200, {
+      mock.onPost(`https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/${documentId}`).reply(200, {
         title: 'Updated Title',
         content: 'Updated Content',
       });

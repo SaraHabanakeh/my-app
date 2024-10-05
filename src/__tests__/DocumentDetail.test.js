@@ -16,7 +16,7 @@ describe('DocumentDetail', () => {
     //fetching a specific document
     it('displays the document by its sent id', async () => {
 
-        mock.onGet('http://localhost:8585/posts/66f34ed981b7b1e257d908fa').reply(200, document);
+        mock.onGet('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/66f34ed981b7b1e257d908fa').reply(200, document);
 
         render(
             <MemoryRouter initialEntries={['/document/66f34ed981b7b1e257d908fa']}>
@@ -33,7 +33,7 @@ describe('DocumentDetail', () => {
     // Error handling test
     it('displays an error message on fetch failure', async () => {
         // Mock an error response
-        mock.onGet('http://localhost:8585/posts/66f34ed981b7b1e257d908fa').reply(404);
+        mock.onGet('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/66f34ed981b7b1e257d908fa').reply(404);
     
         render(
             <MemoryRouter initialEntries={['/document/66f34ed981b7b1e257d908fa']}>

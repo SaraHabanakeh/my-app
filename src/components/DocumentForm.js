@@ -30,9 +30,9 @@ function DocumentForm() {
 
     try {
       if (id) {
-        await axios.post(`http://localhost:8585/posts/${id}`, documentData);
+        await axios.post(`https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/${id}`, documentData);
       } else {
-        await axios.post(`http://localhost:8585/posts/new`, documentData);
+        await axios.post(`https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/new`, documentData);
       }
       navigate('/');
     } catch (error) {

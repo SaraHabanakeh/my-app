@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-
 function DocumentForm() {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [error, setError] = useState(''); // Added useState for error
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,15 +38,7 @@ function DocumentForm() {
       navigate('/');
     } catch (error) {
       console.error('Error saving document:', error);
-              try {
-          const response = await axios.get(`https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/${id}`);
-          setTitle(response.data.title);
-          setContent(response.data.content);
-        } catch (error) {
-          console.error('Error fetching document:', error);
-          setError('Error fetching document');
-        }
-      }
+      setError('Error saving document'); // Corrected error message
     }
   };
 
@@ -60,10 +52,11 @@ function DocumentForm() {
         </label>
         <label>
           Content:
-          <input  type="text" value={content} onChange={(e) => setContent(e.target.value)} />
+          <input type="text" value={content} onChange={(e) => setContent(e.target.value)} />
         </label>
         <button type="submit" className='button'>Save</button>
       </form>
+      {error && <p>{error}</p>} {/* Display error message */}
     </div>
   );
 }

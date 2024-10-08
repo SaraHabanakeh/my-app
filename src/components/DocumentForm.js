@@ -18,6 +18,7 @@ function DocumentForm() {
           setContent(response.data.content);
         } catch (error) {
           console.error('Error fetching document:', error);
+          setError('Error fetching document');
         }
       }
       fetchData();
@@ -37,6 +38,15 @@ function DocumentForm() {
       navigate('/');
     } catch (error) {
       console.error('Error saving document:', error);
+              try {
+          const response = await axios.get(`https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/${id}`);
+          setTitle(response.data.title);
+          setContent(response.data.content);
+        } catch (error) {
+          console.error('Error fetching document:', error);
+          setError('Error fetching document');
+        }
+      }
     }
   };
 

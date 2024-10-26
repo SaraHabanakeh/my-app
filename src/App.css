@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 .App {
   text-align: center;
+  margin-top: 10%;
+  background-color: white;
 }
 
 .App Link{
@@ -18,17 +22,6 @@
   }
 }
 
-.App-header {
-  background-color: #310856;
-  min-height: 10vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -38,40 +31,67 @@
   }
 }
 
-.doc {
-  text-decoration: none;
-  color: black;
-  font-family: 'Times New Roman', Times, serif, Impact, 'Arial Narrow Bold', sans-serif, Impact 'Arial Narrow Bold', sans-serif;
-}
-
-
-.button {
-  display: inline-block;
-  padding: 10px 20px;
+.button-login {
+  padding: 15px;
   font-size: 16px;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
-  color: #fff;
+  color: white;
   margin-top: 20px;
-  background-color: #3d1a5d;
-  border: 1px solid #6b577d;
-  border-radius: 5px;
+  background-color: #371457;
+  border-radius: 30px;
+  width: 90%;
+  margin-left: 23px;
 }
 
-.button1 {
-  display: inline-block;
-  padding: 5px 5px;
-  font-size: 11px;
+.button-new {
+  padding: 15px;
+  font-size: 16px;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
-  color: #fff;
+  color: white;
   margin-top: 20px;
-  background-color: #7d7c7e;
-  border: 1px solid #6b577d;
-  border-radius: 5px;
+  background-color: #371457;
+  border-radius: 30px;
+  width: 100%;
 }
+
+.button-update {
+  padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  margin-top: 20px;
+  background-color: #371457;
+  border-radius: 30px;
+  width: 80%;
+  margin-left: 50px;
+}
+
+.link-doc {
+  text-decoration: none;
+  color: black;
+}
+
+.plus-icon{
+  color: #371457;
+}
+
+input {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  font-size: 16px;
+  width: 90%;
+  border: 1px solid #371457;;
+}
+
+
 
 form {
   display: flex;
@@ -82,25 +102,46 @@ form {
 
 label {
   margin-bottom: 10px;
-}
-
-input[type="text"], textarea {
-  padding: 20px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  width: 100%;
-  border: 1px solid #6b577d;
+  margin-left: 40px;
+  float: left;
+  font-family:'Roboto', sans-serif
 }
 
 button:hover {
-  background-color: #5a4a6a;  /* Darker color on hover */
+  background-color: #8b73a0;
+}
+
+
+.doc {
+  text-decoration: none;
+  color: black;
+  font-family: 'Times New Roman', Times, serif, Impact, 'Arial Narrow Bold', sans-serif, Impact 'Arial Narrow Bold', sans-serif;
 }
 
 ul {
-  list-style-type: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
   padding: 0;
-  margin: 0;
+  list-style-type: none;
+  max-width: 600px;
+  margin: auto;
 }
 
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px;
+  border-radius: 15px;
+  border: 1px solid #ddd;
+  max-width: 500px;
+
+}
+
+.doc {
+  font-size: 18px;
+  color: #333;
+  text-decoration: none;
+  flex: 1;
+}

@@ -1,11 +1,11 @@
 import { render, screen , fireEvent, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom';
-import DocumentForm from '../components/DocumentForm';
+import DocumentForm from '../components/NewDocumentForm';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 
-describe('DocumentForm', () => {
+describe('NewDocumentForm', () => {
   const mock = new MockAdapter(axios);
 
   it('renders the form for creating a new document', () => {

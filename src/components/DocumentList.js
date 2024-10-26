@@ -1,37 +1,47 @@
-//DocumentList.js
+// DocumentList.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { getUserEmail } from '../utils/auth';
 
 function DocumentList() {
   const [documents, setDocuments] = useState([]);
+  const userEmail = getUserEmail();
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axios.get('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/');
-        console.log('Response:', response.data);
-        setDocuments(response.data.data);
-        console.log(documents);
+        const allDocuments = response.data.data;
+
+        const accessibleDocuments = allDocuments.filter(doc => doc.allowed.includes(userEmail));
+        
+        setDocuments(accessibleDocuments);
       } catch (error) {
         console.error('Error fetching documents:', error);
       }
     }
+
     fetchData();
-  }, [documents]);
+  }, [userEmail]);
 
   return (
     <div>
-      <h1>Documents List</h1>
+      <h1>Documents</h1>
       <ul>
-        {documents.map((document) => (
-          <li key={document._id}>
-            <Link to={`/document/${document._id}`}  className="doc">{document.title}</Link>
-            <Link to={`/edit/${document._id}`} className="button1">Edit </Link>
-          </li>
-        ))}
+        {documents.length > 0 ? (
+          documents.map((document) => (
+            <li key={document._id}>
+              <Link to={`/document/${document._id}`} className="doc">{document.title}</Link>
+              <Link to={`/edit/${document._id}`}>✎</Link>
+            </li>
+          ))
+        ) : (
+          <p>No documents available for your access.</p>
+        )}
       </ul>
-      <Link to="/new" className="button">Create New Document</Link>
+      <Link to="/new" className="link-doc"><span className="plus-icon">➕</span>Create New Document</Link>
     </div>
   );
 }

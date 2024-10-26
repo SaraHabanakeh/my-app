@@ -1,4 +1,5 @@
 // DocumentDetail.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
@@ -13,8 +14,7 @@ function DocumentDetail() {
     async function fetchDocument() {
       try {
         const response = await axios.get(`https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/${id}`);
-        console.log('Response:', response);
-
+        //console.log('Response:', response);
         setDocument(response.data);
       } catch (err) {
         setError('Error fetching document');
@@ -33,7 +33,7 @@ function DocumentDetail() {
     <div>
       <h1>{document.title}</h1>
       <p>{document.content}</p>
-      <Link to="/" className='button'>Back to Document List</Link>
+      <Link to="/documents" className='button'>Back to Document List</Link>
     </div>
   );
 }

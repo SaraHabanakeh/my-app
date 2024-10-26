@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom'
 import App from '../App';
 
-test('renders create new document link', () => {
+test('renders Start page Login Form', () => {
     render(<App />);
-    const linkElement = screen.getByText(/create new document/i);
-    expect(linkElement).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Login/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Login/i })).toBeInTheDocument();
 });

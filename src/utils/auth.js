@@ -13,4 +13,8 @@ export const getUserEmail = () => {
     return sessionStorage.getItem('userEmail') || '';
 };
 
+export const getAuthToken = () => {
+    return sessionStorage.getItem('authToken') || '';
+}
+
 export default handleLogin;

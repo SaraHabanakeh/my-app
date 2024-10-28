@@ -2,12 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { GraphQLClient, gql } from 'graphql-request';
+import { getAuthToken } from '../utils/auth';
 
 const SendInvitForm = () => {
     const [email, setEmail] = useState('');
     const [documentUrl, setDocumentUrl] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
+    const authToken = getAuthToken();
 
     const location = useLocation();
 
@@ -18,6 +20,22 @@ const SendInvitForm = () => {
             setDocumentUrl(url);
         }
     }, [location]);
+
+
+    const client = new GraphQLClient('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/graphql/docs', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+        },
+    });
+
+    const UPDATE_ALLOWED_LIST_MUTATION = gql`
+        mutation Updatedocument($id: ID!, $allowed: [String!]!) {
+            updatedocument(id: $id, allowed: $allowed) {
+                allowed
+            }
+        }
+    `;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,19 +55,20 @@ const SendInvitForm = () => {
             const inviteData = await inviteResponse.json();
 
             if (!inviteResponse.ok) {
-                setResponseMessage(inviteData.error);
+                setResponseMessage(inviteData.error || 'Failed to send invitation.');
                 return;
             }
 
             // Update the document's allowed list
-            const updateResponse = await axios.post(
-                `https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/${documentId}`,
-                { allowed: [email] }
-            );
+            const variables = {
+                id: documentId,
+                allowed: [email],
+            };
 
+            const updateResponse = await client.request(UPDATE_ALLOWED_LIST_MUTATION, variables);
 
-            if (updateResponse.status === 200) {
-                setResponseMessage('Invitation sent successfully!');
+            if (updateResponse.updatedocument) {
+                setResponseMessage('Invitation sent and allowed list updated successfully!');
             } else {
                 setResponseMessage('Failed to update the allowed list.');
             }
@@ -73,11 +92,11 @@ const SendInvitForm = () => {
                 placeholder="Email Address"
               />
             </div>
-      
             <button type="submit" className='button-new'>Send</button>
           </form>
           {responseMessage && <p>{responseMessage}</p>}
         </div>
-      );
-};      
+    );
+};
+
 export default SendInvitForm;

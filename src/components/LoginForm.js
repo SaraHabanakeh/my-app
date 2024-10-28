@@ -1,8 +1,7 @@
-// LoginForm.js
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { handleLogin } from '../utils/auth.js';
+import { GraphQLClient, gql } from 'graphql-request';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -10,70 +9,78 @@ const LoginForm = () => {
     const [responseMessage, setResponseMessage] = useState('');
     const navigate = useNavigate();
 
+    const client = new GraphQLClient('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/graphql/auth', {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const LOGIN_MUTATION = gql`
+        mutation Login($email: String!, $password: String!) {
+            login(email: $email, password: $password) {
+                message
+                user {
+                    email
+                }
+                token
+            }
+        }
+    `;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/user/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
+            const variables = { email, password };
+            const data = await client.request(LOGIN_MUTATION, variables);
 
-            const data = await response.json();
-
-
-            if (response.ok) {
-                const userToken = data.data.token || '';
+            if (data.login) {
+                const userToken = data.login.token;
                 const userEmail = email;
-                console.log('User Email:', userEmail);
+                console.log(data.login)
 
                 handleLogin(userToken, userEmail);
 
                 setResponseMessage('Login successful!');
                 navigate('/documents');
             } else {
-
-                setResponseMessage(data.errors ? data.errors.detail : 'Login failed. Please check your credentials.');
+                setResponseMessage(data.login.message || 'Login failed. Please check your credentials.');
             }
         } catch (error) {
-            console.error('Error during login:', error); 
+            console.error('Error during login:', error);
             setResponseMessage('Login failed. Please try again later.');
         }
     };
 
     return (
-    <div>
-        <h1>Welcome! 👋</h1>
-        <form onSubmit={handleSubmit}>
-            <div>
-                <input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email Address"
-                    required
-                />
-            </div>
-            <div>
-                <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                    required
-                />
-            </div>
-            <button type="submit" className='button-login'>Login</button>
-        </form>
-        <p>Don't have an account? <Link to="/register">Sign up here</Link></p>
-        {responseMessage && <p>{responseMessage}</p>}
-    </div>
-
+        <div>
+            <h1>Welcome! 👋</h1>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email Address"
+                        required
+                    />
+                </div>
+                <div>
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        required
+                    />
+                </div>
+                <button type="submit" className="button-login">Login</button>
+            </form>
+            <p>Don't have an account? <Link to="/register">Sign up here</Link></p>
+            {responseMessage && <p>{responseMessage}</p>}
+        </div>
     );
 };
 

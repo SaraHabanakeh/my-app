@@ -2,36 +2,51 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { GraphQLClient, gql } from 'graphql-request';
 
 const RegisterForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
-    const [token, setToken] = useState(null);
+
+
+    const client = new GraphQLClient('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/graphql/auth', {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const REGISTER_MUTATION = gql`
+        mutation Register($email: String!, $password: String!) {
+            register(email: $email, password: $password) {
+                message
+                user {
+                    email
+                }
+            }
+        }
+    `;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/user/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
+            const variables = { email, password };
+            const data = await client.request(REGISTER_MUTATION, variables);
+            
+            //console.log('Registration response:', data);
 
-            const data = await response.json();
-
-            if (response.ok) {
-                const userToken = data.data.token || '';
-                setToken(userToken);
-                setResponseMessage('Registration successful!');
+            if (data.register) {
+                setResponseMessage(data.register.message || 'Registration successful!');
             } else {
-                setResponseMessage(data.errors ? data.errors.detail : 'Registration failed.');
+                setResponseMessage('Registration failed. Please try again.');
             }
+
         } catch (error) {
-            setResponseMessage('Error registering account.');
+            console.error('Error during registration:', error);
+            
+            const errorMessage = error?.response?.errors?.[0]?.message || 'Error registering account. Please try again.';
+            setResponseMessage(errorMessage);
         }
     };
 
@@ -65,7 +80,6 @@ const RegisterForm = () => {
           <Link to="/">Back to Login</Link>
         </div>
       );
-      
 };
 
 export default RegisterForm;

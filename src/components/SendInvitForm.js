@@ -1,7 +1,7 @@
 // SendInvitForm.js
 
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate,} from 'react-router-dom';
 import { GraphQLClient, gql } from 'graphql-request';
 import { getAuthToken } from '../utils/auth';
 
@@ -12,8 +12,12 @@ const SendInvitForm = () => {
     const authToken = getAuthToken();
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
+        // Log to check if useEffect is being called unexpectedly
+        console.log("useEffect triggered due to location change", location.search);
+
         const params = new URLSearchParams(location.search);
         const url = params.get('documentUrl');
         if (url) {
@@ -69,6 +73,7 @@ const SendInvitForm = () => {
 
             if (updateResponse.updatedocument) {
                 setResponseMessage('Invitation sent and allowed list updated successfully!');
+                navigate('/documents'); // redirect to documents list
             } else {
                 setResponseMessage('Failed to update the allowed list.');
             }

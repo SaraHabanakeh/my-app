@@ -1,7 +1,9 @@
+// UpdateDocumentForm.js
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { GraphQLClient, gql } from 'graphql-request';
-import { getAuthToken, getUserEmail } from '../utils/auth';
+import { getAuthToken } from '../utils/auth';
 import { io } from 'socket.io-client';
 
 const UpdateDocumentForm = () => {
@@ -9,11 +11,10 @@ const UpdateDocumentForm = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [socket, setSocket] = useState(null);
-  const navigate = useNavigate();  // Hook for navigation
+  const navigate = useNavigate();
   const authToken = getAuthToken();
-  const userEmail = getUserEmail();
 
-  // GraphQL client setup with authentication headers
+  // GraphQL client setup
   const client = new GraphQLClient('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/graphql/docs', {
     headers: {
       'Content-Type': 'application/json',
@@ -21,7 +22,7 @@ const UpdateDocumentForm = () => {
     },
   });
 
-  // GraphQL query to fetch the document data
+  // GraphQL queries and mutations
   const FETCH_DOCUMENT_QUERY = gql`
     query GetDocument($id: ID!) {
       document(id: $id) {
@@ -31,7 +32,6 @@ const UpdateDocumentForm = () => {
     }
   `;
 
-  // GraphQL mutation to update the document data
   const UPDATE_DOCUMENT_MUTATION = gql`
     mutation UpdateDocument($id: ID!, $title: String!, $content: String!) {
       updatedocument(id: $id, title: $title, content: $content) {
@@ -48,13 +48,14 @@ const UpdateDocumentForm = () => {
     });
     setSocket(newSocket);
 
-    // Join the document room
-    newSocket.emit('joinDocument', { documentId: id, email: userEmail });
+    // Join the document
+    newSocket.emit('joinDocument', { documentId: id, email: authToken });
 
-    // Listen for incoming changes from other users
+    // Listen for incoming changes
     newSocket.on('receiveTypingContent', (newContent) => {
       setContent(newContent);
     });
+
     newSocket.on('receiveTypingTitle', (newTitle) => {
       setTitle(newTitle);
     });
@@ -65,9 +66,9 @@ const UpdateDocumentForm = () => {
       newSocket.off('receiveTypingContent');
       newSocket.off('receiveTypingTitle');
     };
-  }, [id, userEmail, authToken]);
+  }, [id, authToken]);
 
-  // Fetch the document data once when the component mounts
+  // Fetch the document data when the component mounts
   useEffect(() => {
     async function fetchData() {
       try {
@@ -80,7 +81,7 @@ const UpdateDocumentForm = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [id]);
 
   // Handle form submission to update the document
   const handleSubmit = async (e) => {
@@ -88,24 +89,10 @@ const UpdateDocumentForm = () => {
     try {
       const variables = { id, title, content };
       await client.request(UPDATE_DOCUMENT_MUTATION, variables);
-      navigate('/documents');  // Navigate to the documents page after successful update
+      navigate('/documents');
     } catch (error) {
       console.error('Error updating document:', error);
     }
-  };
-
-  // Handle typing event for content field
-  const handleTypingContent = (e) => {
-    const newContent = e.target.value;
-    setContent(newContent);
-    socket.emit('typingContent', { documentId: id, userEmail, content: newContent });
-  };
-
-  // Handle typing event for title field
-  const handleTypingTitle = (e) => {
-    const newTitle = e.target.value;
-    setTitle(newTitle);
-    socket.emit('typingTitle', { documentId: id, userEmail, title: newTitle });
   };
 
   const documentUrl = `https://www.student.bth.se/~sahb23/editor/#/edit/${id}`;
@@ -119,7 +106,12 @@ const UpdateDocumentForm = () => {
           <input
             type="text"
             value={title}
-            onChange={handleTypingTitle}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              if (socket) {
+                socket.emit('typingTitle', e.target.value); // Emit change
+              }
+            }}
           />
         </label>
         <label>
@@ -127,7 +119,12 @@ const UpdateDocumentForm = () => {
           <input
             type="text"
             value={content}
-            onChange={handleTypingContent}
+            onChange={(e) => {
+              setContent(e.target.value);
+              if (socket) {
+                socket.emit('typingContent', e.target.value); // Emit change
+              }
+            }}
           />
         </label>
         <button type="submit" className='button-update'>Save Changes</button>

@@ -55,12 +55,12 @@ function DocumentDetail() {
       {document ? (
         <>
           <h1>{document.title}</h1>
-          <p>{document.content}</p>
+          <div className='doc-detail'><p>{document.content}</p></div>
         </>
       ) : (
         <p>Document not found.</p>
       )}
-      <Link to="/documents" className='button'>Back to Document List</Link>
+      <Link to="/documents" className="nav-link">Back to Document List</Link>
     </div>
   );
 }

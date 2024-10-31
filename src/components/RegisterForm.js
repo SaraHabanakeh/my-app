@@ -33,11 +33,9 @@ const RegisterForm = () => {
         try {
             const variables = { email, password };
             const data = await client.request(REGISTER_MUTATION, variables);
-            
-            //console.log('Registration response:', data);
 
             if (data.register) {
-                setResponseMessage(data.register.message || 'Registration successful!');
+                setResponseMessage(data.register.message || 'Registration successful! ✔');
             } else {
                 setResponseMessage('Registration failed. Please try again.');
             }

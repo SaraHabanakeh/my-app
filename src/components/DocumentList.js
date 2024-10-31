@@ -4,6 +4,7 @@ import React, { useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { GraphQLClient, gql } from 'graphql-request';
 import { getUserEmail, getAuthToken} from '../utils/auth';
+import docIcon from '../doc.JPG';
 
 function DocumentList() {
   const [documents, setDocuments] = useState([]);
@@ -56,7 +57,9 @@ function DocumentList() {
         {documents.length > 0 ? (
           documents.map((document) => (
             <li key={document._id}>
+              <img src={docIcon} alt="Document icon" className="doc-icon" />
               <Link to={`/document/${document._id}`} className="doc">{document.title}</Link>
+
               <Link to={`/edit/${document._id}`}>✎</Link>
             </li>
           ))
@@ -64,7 +67,7 @@ function DocumentList() {
           <p>No documents available for your access.</p>
         )}
       </ul>
-      <Link to="/new" className="link-doc"><span className="plus-icon">➕</span>Create New Document</Link>
+      <Link to="/new" className="nav-link"> ➕Create New Document</Link>
       {responseMessage && <p>{responseMessage}</p>}
     </div>
   );

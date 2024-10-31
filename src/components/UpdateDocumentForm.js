@@ -1,19 +1,23 @@
+//UpdateDocumentForm.js
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { GraphQLClient, gql } from 'graphql-request';
 import { getAuthToken, getUserEmail } from '../utils/auth';
 import { io } from 'socket.io-client';
+import Editor from '@monaco-editor/react';
 
 const UpdateDocumentForm = () => {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [socket, setSocket] = useState(null);
-  const navigate = useNavigate();  // Hook for navigation
+  const [isCodeMode, setIsCodeMode] = useState(false);
+
+  const navigate = useNavigate();
   const authToken = getAuthToken();
   const userEmail = getUserEmail();
 
-  // GraphQL client setup with authentication headers
   const client = new GraphQLClient('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/graphql/docs', {
     headers: {
       'Content-Type': 'application/json',
@@ -21,7 +25,6 @@ const UpdateDocumentForm = () => {
     },
   });
 
-  // GraphQL query to fetch the document data
   const FETCH_DOCUMENT_QUERY = gql`
     query GetDocument($id: ID!) {
       document(id: $id) {
@@ -31,7 +34,6 @@ const UpdateDocumentForm = () => {
     }
   `;
 
-  // GraphQL mutation to update the document data
   const UPDATE_DOCUMENT_MUTATION = gql`
     mutation UpdateDocument($id: ID!, $title: String!, $content: String!) {
       updatedocument(id: $id, title: $title, content: $content) {
@@ -41,17 +43,14 @@ const UpdateDocumentForm = () => {
     }
   `;
 
-  // WebSocket connection and event handling
   useEffect(() => {
     const newSocket = io('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net', {
       auth: { token: authToken },
     });
     setSocket(newSocket);
 
-    // Join the document room
     newSocket.emit('joinDocument', { documentId: id, email: userEmail });
 
-    // Listen for incoming changes from other users
     newSocket.on('receiveTypingContent', (newContent) => {
       setContent(newContent);
     });
@@ -59,7 +58,6 @@ const UpdateDocumentForm = () => {
       setTitle(newTitle);
     });
 
-    // Cleanup function to disconnect the socket and remove listeners
     return () => {
       newSocket.disconnect();
       newSocket.off('receiveTypingContent');
@@ -67,7 +65,6 @@ const UpdateDocumentForm = () => {
     };
   }, [id, userEmail, authToken]);
 
-  // Fetch the document data once when the component mounts
   useEffect(() => {
     async function fetchData() {
       try {
@@ -75,6 +72,7 @@ const UpdateDocumentForm = () => {
         const data = await client.request(FETCH_DOCUMENT_QUERY, variables);
         setTitle(data.document.title);
         setContent(data.document.content);
+        setIsCodeMode(data.document.code);
       } catch (error) {
         console.error('Error fetching document:', error);
       }
@@ -82,28 +80,23 @@ const UpdateDocumentForm = () => {
     fetchData();
   }, []);
 
-  // Handle form submission to update the document
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const variables = { id, title, content };
+      const variables = { id, title, content, code: isCodeMode };
       await client.request(UPDATE_DOCUMENT_MUTATION, variables);
-      navigate('/documents');  // Navigate to the documents page after successful update
+      navigate('/documents');
     } catch (error) {
       console.error('Error updating document:', error);
     }
   };
 
-  // Handle typing event for content field
-  const handleTypingContent = (e) => {
-    const newContent = e.target.value;
+  const handleTypingContent = (newContent) => {
     setContent(newContent);
     socket.emit('typingContent', { documentId: id, userEmail, content: newContent });
   };
 
-  // Handle typing event for title field
-  const handleTypingTitle = (e) => {
-    const newTitle = e.target.value;
+  const handleTypingTitle = (newTitle) => {
     setTitle(newTitle);
     socket.emit('typingTitle', { documentId: id, userEmail, title: newTitle });
   };
@@ -111,29 +104,57 @@ const UpdateDocumentForm = () => {
   const documentUrl = `https://www.student.bth.se/~sahb23/editor/#/edit/${id}`;
 
   return (
-    <div>
-      <h1>Edit Document</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Title:
-          <input
-            type="text"
-            value={title}
-            onChange={handleTypingTitle}
-          />
-        </label>
-        <label>
-          Content:
-          <input
-            type="text"
-            value={content}
-            onChange={handleTypingContent}
-          />
-        </label>
-        <button type="submit" className='button-update'>Save Changes</button>
-      </form>
-      <Link to={`/invite?documentUrl=${encodeURIComponent(documentUrl)}`} className='button'>Invite to Edit</Link>
+<div>
+  <h1>Edit Document</h1>
+  <form onSubmit={handleSubmit}>
+    <label>
+      {isCodeMode ? (
+        <Editor
+          height="50px"
+          language="plaintext"
+          value={title}
+          onChange={(value) => handleTypingTitle(value || '')}
+          className="title-input"
+        />
+      ) : (
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => handleTypingTitle(e.target.value)}
+          className="title-input"
+        />
+      )}
+    </label>
+    <label>
+      {isCodeMode ? (
+        <Editor
+          height="400px"
+          language="javascript"
+          value={content}
+          onChange={(value) => handleTypingContent(value || '')}
+          className="content-input"
+        />
+      ) : (
+        <textarea
+          value={content}
+          onChange={(e) => handleTypingContent(e.target.value)}
+          rows="10"
+          className="content-input"
+          style={{ width: '100%' }}
+        />
+      )}
+    </label>
+
+    <div className="button-container">
+      <button type="submit" className="button-update">Save Changes</button>
+      <Link to={`/invite?documentUrl=${encodeURIComponent(documentUrl)}`} className="button-invite">Invite to Edit</Link>
     </div>
+
+    <button onClick={(e) => { e.preventDefault(); setIsCodeMode(prev => !prev); }} className="button-code">
+      {isCodeMode ? 'Text Mode' : 'Code Mode'}
+    </button>
+  </form>
+</div>
   );
 };
 

@@ -55,6 +55,7 @@ function NewDocumentForm() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Title"
+          className='title-input'
           required
         />
         <input
@@ -62,6 +63,7 @@ function NewDocumentForm() {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Content"
+          className='content-input'
           required
         />
         <button type="submit" className='button-new'>Save</button>

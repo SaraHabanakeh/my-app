@@ -2,126 +2,92 @@
 
 .App {
   text-align: center;
-  margin-top: 10%;
-  background-color: white;
+  background-color: #ffffff;
+  padding-top: 20px;
 }
 
-.App Link{
+.App Link {
   text-decoration: none;
   gap: 20px;
+  font-family: 'Roboto', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.button-login,
+.button-new,
+.button-update,
+.button-invite,
+.button-code {
+  padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #6d1483; /* Spotify green */
+  border-radius: 30px;
+  width: 90%;
+  max-width: 400px;
+  margin: 20px auto;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .button-login {
-  padding: 15px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  margin-top: 20px;
-  background-color: #371457;
-  border-radius: 30px;
-  width: 90%;
-  margin-left: 23px;
+  background-color: #191414; /* Spotify dark */
 }
 
-.button-new {
-  padding: 15px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  margin-top: 20px;
-  background-color: #371457;
-  border-radius: 30px;
-  width: 100%;
+.button-invite,
+.button-code {
+  background-color: #c038e2; /* Lighter green */
 }
 
-.button-update {
-  padding: 15px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  margin-top: 20px;
-  background-color: #371457;
-  border-radius: 30px;
-  width: 80%;
-  margin-left: 50px;
+.button-update:hover,
+.button-invite:hover,
+.button-code:hover {
+  background-color: #6d1483; /* Darker green */
 }
 
 .link-doc {
+  margin-top: 20px;
   text-decoration: none;
-  color: black;
+  color: #6d1483;
+  font-weight: 500;
 }
 
-.plus-icon{
-  color: #371457;
-}
-
-input {
+input,
+textarea {
   padding: 15px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 30px;
   font-size: 16px;
   width: 90%;
-  border: 1px solid #371457;;
+  max-width: 400px;
+  box-sizing: border-box;
 }
-
-
 
 form {
   display: flex;
   flex-direction: column;
-  width: 400px;
+  max-width: 400px;
   margin: 0 auto;
 }
 
 label {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
   margin-bottom: 10px;
-  margin-left: 40px;
-  float: left;
-  font-family:'Roboto', sans-serif
+  margin-left: 5%;
 }
 
 button:hover {
-  background-color: #8b73a0;
-}
-
-
-.doc {
-  text-decoration: none;
-  color: black;
-  font-family: 'Times New Roman', Times, serif, Impact, 'Arial Narrow Bold', sans-serif, Impact 'Arial Narrow Bold', sans-serif;
+  background-color: #6d1483;
 }
 
 ul {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 5px;
+  gap: 15px;
   padding: 0;
   list-style-type: none;
   max-width: 600px;
@@ -132,16 +98,58 @@ li {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 40px;
-  border-radius: 15px;
-  border: 1px solid #ddd;
-  max-width: 500px;
-
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  background: #f9f9f9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .doc {
   font-size: 18px;
   color: #333;
   text-decoration: none;
-  flex: 1;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+.doc-detail {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.doc-icon {
+  width: 60px;
+  border-radius: 10px;
+}
+
+.title-input,
+.content-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.button-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.nav-link {
+  margin-top: 20px; /* Adjust the value as needed */
+  text-decoration: none;
+  color: #6d1483; /* Match Spotify green */
+  font-weight: 500;
+  display: block;
 }

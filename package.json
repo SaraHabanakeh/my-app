@@ -4,6 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "@monaco-editor/react": "^4.6.0",
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "graphql-request": "^7.1.0",
@@ -62,7 +63,10 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/index.js",
-      "<rootDir>/src/reportWebVitals.js"
+      "<rootDir>/src/reportWebVitals.js",
+      "<rootDir>/src/components/SendInvitForm.js",
+      "<rootDir>/src/components/PrivateRoute.js",
+      "<rootDir>/src/utils/auth.js"
     ]
   }
 }

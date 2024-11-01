@@ -7,7 +7,7 @@ import UpdateDocumentForm from './components/UpdateDocumentForm';
 import SendInvitForm from './components/SendInvitForm';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
-import PrivateRoute from './components/PrivateRoute'; 
+import PrivateRoute from './components/PrivateRoute';
 import './App.css';
 
 function App() {

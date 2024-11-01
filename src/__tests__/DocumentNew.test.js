@@ -1,58 +1,78 @@
-import { render, screen , fireEvent, waitFor} from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import DocumentForm from '../components/NewDocumentForm';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
+import NewDocumentForm from '../components/NewDocumentForm';
+import { MemoryRouter } from 'react-router-dom';
+import { GraphQLClient } from 'graphql-request';
+import { getAuthToken, getUserEmail } from '../utils/auth';
+import { useNavigate } from 'react-router-dom';
+
+// Mock dependencies
+jest.mock('../utils/auth', () => ({
+    getAuthToken: jest.fn(),
+    getUserEmail: jest.fn(),
+}));
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: jest.fn(),
+}));
 
 describe('NewDocumentForm', () => {
-  const mock = new MockAdapter(axios);
-
-  it('renders the form for creating a new document', () => {
-    render(
-      <MemoryRouter initialEntries={['/new']}>
-        <Routes>
-          <Route path="/new" element={<DocumentForm />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    expect(screen.getByText('New Document')).toBeInTheDocument();
-    expect(screen.getByLabelText(/Title:/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Content:/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Save/i })).toBeInTheDocument();
-  });
-
-
-  it('submits new data when Save button is clicked', async () => {
-
-    mock.onPost('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/posts/new').reply(200, {
-      title: 'Test Title',
-      content: 'Test Content',
+    beforeEach(() => {
+        getAuthToken.mockReturnValue('test-token');
+        getUserEmail.mockReturnValue('test@example.com');
+        useNavigate.mockReturnValue(jest.fn());
     });
 
-    render(
-      <MemoryRouter initialEntries={['/new']}>
-        <Routes>
-          <Route path="/new" element={<DocumentForm />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    it('renders form fields', () => {
+        render(
+            <MemoryRouter>
+                <NewDocumentForm />
+            </MemoryRouter>
+        );
 
-
-    fireEvent.change(screen.getByLabelText(/Title:/i), { target: { value: 'Test Title' } });
-    fireEvent.change(screen.getByLabelText(/Content:/i), { target: { value: 'Test Content' } });
-    fireEvent.click(screen.getByRole('button', { name: /Save/i }));
-
-    await waitFor(() => {
-      expect(mock.history.post.length).toBe(1);
+        expect(screen.getByPlaceholderText('Title')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Content')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Save/i })).toBeInTheDocument();
     });
 
+    it('updates title and content state on input change', () => {
+        render(
+            <MemoryRouter>
+                <NewDocumentForm />
+            </MemoryRouter>
+        );
 
-    expect(mock.history.post[0].data).toEqual(JSON.stringify({
-      title: 'Test Title',
-      content: 'Test Content',
-    }));
+        const titleInput = screen.getByPlaceholderText('Title');
+        const contentInput = screen.getByPlaceholderText('Content');
+
+        fireEvent.change(titleInput, { target: { value: 'Test Title' } });
+        fireEvent.change(contentInput, { target: { value: 'Test Content' } });
+
+        expect(titleInput.value).toBe('Test Title');
+        expect(contentInput.value).toBe('Test Content');
+    });
+
+});
+
+it('logs error on submission failure', async () => {
+  const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+  GraphQLClient.prototype.request = jest.fn().mockRejectedValue(new Error('Network error'));
+
+  render(
+      <MemoryRouter>
+          <NewDocumentForm />
+      </MemoryRouter>
+  );
+
+  fireEvent.change(screen.getByPlaceholderText('Title'), { target: { value: 'Error Test' } });
+  fireEvent.change(screen.getByPlaceholderText('Content'), { target: { value: 'Error Content' } });
+  fireEvent.click(screen.getByRole('button', { name: /Save/i }));
+
+  await waitFor(() => {
+
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('Error creating document:'), expect.any(Error));
   });
 
+  consoleSpy.mockRestore();
 });

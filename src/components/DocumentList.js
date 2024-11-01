@@ -36,7 +36,7 @@ function DocumentList() {
 
           if (data.userdocuments) {
             setDocuments(data.userdocuments);
-            console.log(documents)
+            //console.log(documents)
           } else {
             setResponseMessage('No documents available for your access.');
           }

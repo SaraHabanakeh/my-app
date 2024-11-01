@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { handleLogin } from '../utils/auth.js';
 import { GraphQLClient, gql } from 'graphql-request';
 
+
+
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -39,7 +41,7 @@ const LoginForm = () => {
             if (data.login) {
                 const userToken = data.login.token;
                 const userEmail = email;
-                console.log(data.login)
+                //console.log(data.login)
 
                 handleLogin(userToken, userEmail);
 

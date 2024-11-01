@@ -21,30 +21,30 @@
   font-size: 16px;
   font-weight: bold;
   color: white;
-  background-color: #6d1483; /* Spotify green */
+  background-color: #6d1483;
   border-radius: 30px;
   width: 90%;
   max-width: 400px;
-  margin: 20px auto;
+  margin: auto;
   display: block;
   text-align: center;
   text-decoration: none;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.button-login {
-  background-color: #191414; /* Spotify dark */
+.button-login,
+.button-code {
+  background-color: #191414;
 }
 
-.button-invite,
-.button-code {
-  background-color: #c038e2; /* Lighter green */
+.button-invite {
+  background-color: #6d1483;
 }
 
 .button-update:hover,
 .button-invite:hover,
 .button-code:hover {
-  background-color: #6d1483; /* Darker green */
+  background-color: #c038e2;
 }
 
 .link-doc {
@@ -58,7 +58,7 @@ input,
 textarea {
   padding: 15px;
   margin-bottom: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #c038e2;
   border-radius: 30px;
   font-size: 16px;
   width: 90%;
@@ -81,7 +81,7 @@ label {
 }
 
 button:hover {
-  background-color: #6d1483;
+  background-color: #c038e2;
 }
 
 ul {
@@ -99,10 +99,12 @@ li {
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  width: 50%;
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #c038e2;
   background: #f9f9f9;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  margin: auto;
 }
 
 .doc {
@@ -134,7 +136,7 @@ li {
   padding: 10px;
   font-size: 16px;
   border-radius: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #c038e2;;
   margin-bottom: 15px;
   font-family: 'Roboto', sans-serif;
 }
@@ -147,9 +149,39 @@ li {
 }
 
 .nav-link {
-  margin-top: 20px; /* Adjust the value as needed */
+  margin-top: 20px;
   text-decoration: none;
-  color: #6d1483; /* Match Spotify green */
+  color: #6d1483;
   font-weight: 500;
   display: block;
 }
+
+.output-container {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+.editor-container {
+  position: relative; /* This allows absolute positioning for child elements */
+}
+
+.run-button {
+  position: absolute;
+  max-width: 25px;
+  top: 10px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  color: rgb(7, 137, 7);; /* Text color */
+  border: none;
+  cursor: pointer;
+  font-size: 16px; /* Adjust size if needed */
+  z-index: 10; /* Ensure it is above other elements */
+}
+
+.run-button:hover {
+  background-color: darkgreen; /* Darker shade on hover */
+}
+

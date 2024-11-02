@@ -13,10 +13,7 @@
 }
 
 .button-login,
-.button-new,
-.button-update,
-.button-invite,
-.button-code {
+.button-new {
   padding: 15px;
   font-size: 16px;
   font-weight: bold;
@@ -32,9 +29,29 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.button-update,
+.button-invite,
+.button-code {
+  padding: 5px;
+  font-size: 12px;
+  font-weight: normal;
+  color: white;
+  background-color: #6d1483;
+  border: none;  
+  border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;           /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
 .button-login,
 .button-code {
-  background-color: #191414;
+  background-color: #25272a;
 }
 
 .button-invite {
@@ -76,8 +93,7 @@ form {
 label {
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
-  margin-bottom: 10px;
-  margin-left: 5%;
+  /*margin-left: 5%;*/
 }
 
 button:hover {
@@ -134,10 +150,10 @@ li {
 .content-input {
   width: 100%;
   padding: 10px;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 10px;
   border: 1px solid #c038e2;;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -145,7 +161,7 @@ li {
   display: flex;
   gap: 15px;
   justify-content: center;
-  margin-top: 20px;
+  margin: 5px;
 }
 
 .nav-link {
@@ -171,17 +187,37 @@ li {
 
 .run-button {
   position: absolute;
-  max-width: 25px;
+  background-color: transparent;
+  max-width: 30px;
   top: 10px; /* Adjust as needed */
   right: 10px; /* Adjust as needed */
-  color: rgb(7, 137, 7);; /* Text color */
+  color: rgb(7, 137, 7); /* Text color */
   border: none;
   cursor: pointer;
-  font-size: 16px; /* Adjust size if needed */
-  z-index: 10; /* Ensure it is above other elements */
+  font-size: 40px; /* Adjust size if needed */
+  z-index: 20; /* Ensure it is above other elements */
 }
 
 .run-button:hover {
-  background-color: darkgreen; /* Darker shade on hover */
+  background-color: transparent;
+  color: darkgreen; /* Darker shade on hover */
 }
+
+.code-output {
+  background-color: #25272a;  /* Dark background */
+  color: #f2f2ed;              /* Light text color */
+  padding: 10px;               /* Padding around the text */
+  border-radius: 5px;          /* Rounded corners */
+  font-family: 'Courier New', Courier, monospace; /* Monospace font */
+  font-size: 13px;             /* Font size */
+  overflow-x: auto;            /* Horizontal scroll for long lines */
+  line-height: 1.5;            /* Line height for readability */
+  border: 1px solid #44475a;   /* Border color */
+  white-space: pre-wrap;       /* Wrap long lines */
+}
+
+.code-output code {
+  color: #66d9ef;               /* Optional: style inline code differently */
+}
+
 

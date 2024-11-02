@@ -154,12 +154,21 @@ const UpdateDocumentForm = () => {
             className="title-input"
           />
         </label>
+        <div className="button-container">
+          <button type="submit" className="button-update">Save</button>
+          <Link to={`/invite?documentUrl=${encodeURIComponent(documentUrl)}`} className="button-invite">Invite to Edit</Link>
+        </div>
+        <div className="button-container">
+          <button onClick={(e) => { e.preventDefault(); setIsCodeMode(prev => !prev); }} className="button-code">
+            {isCodeMode ? 'Text Mode' : 'Code Mode'}
+          </button>
+        </div>
         <label>
           <div className="editor-container">
             {isCodeMode ? (
               <>
                 <Editor
-                  height="400px"
+                  height="350px"
                   language="javascript"
                   value={content}
                   onChange={handleTypingContent}
@@ -183,18 +192,8 @@ const UpdateDocumentForm = () => {
             )}
           </div>
         </label>
-
-        <pre>{output}</pre>
-
-        <div className="button-container">
-          <button type="submit" className="button-update">Save</button>
-          <Link to={`/invite?documentUrl=${encodeURIComponent(documentUrl)}`} className="button-invite">Invite to Edit</Link>
-        </div>
-        <div className="button-container">
-          <button onClick={(e) => { e.preventDefault(); setIsCodeMode(prev => !prev); }} className="button-code">
-            {isCodeMode ? 'Text Mode' : 'Code Mode'}
-          </button>
-        </div>
+        {isCodeMode ? (
+        <pre class="code-output">{output}</pre>):  <pre></pre>}
       </form>
     </div>
   );

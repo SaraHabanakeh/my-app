@@ -22,8 +22,8 @@ describe('DocumentList', () => {
 
 
         const mockDocuments = [
-            { _id: '1', title: 'Document 1', allowed: true },
-            { _id: '2', title: 'Document 2', allowed: true },
+            { _id: '1', title: 'Document 1' },
+            { _id: '2', title: 'Document 2' },
         ];
 
         GraphQLClient.prototype.request = jest.fn().mockResolvedValue({ userdocuments: mockDocuments });

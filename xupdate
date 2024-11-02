@@ -1,0 +1,53 @@
+/*import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import UpdateDocumentForm from '../components/UpdateDocumentForm';
+import { MemoryRouter } from 'react-router-dom';
+import { GraphQLClient } from 'graphql-request';
+import { getAuthToken, getUserEmail } from '../utils/auth';
+import { io } from 'socket.io-client';
+import { useParams} from 'react-router-dom';
+
+// Mock dependencies
+jest.mock('../utils/auth', () => ({
+    getAuthToken: jest.fn(),
+    getUserEmail: jest.fn(),
+}));
+
+GraphQLClient.prototype.request = jest.fn().mockResolvedValue({
+    document: { title: 'Sample Title', content: 'Sample Content'},
+});
+
+
+jest.mock('socket.io-client');
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+    useNavigate: jest.fn(),
+}));
+
+describe('UpdateDocumentForm', () => {
+    beforeEach(() => {
+        useParams.mockReturnValue({ id: '3' });
+        getAuthToken.mockReturnValue('test-token');
+        getUserEmail.mockReturnValue('test@example.com');
+        io.mockReturnValue({
+            emit: jest.fn(),
+            on: jest.fn(),
+            disconnect: jest.fn(),
+            off: jest.fn(),
+        });
+    });
+
+    it('renders form fields and buttons', async () => {
+        render(
+            <MemoryRouter>
+                <UpdateDocumentForm />
+            </MemoryRouter>
+        );
+
+        expect(screen.getByRole('button', { name: /Save/i })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: /Invite to Edit/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Code Mode/i })).toBeInTheDocument();
+    });
+
+});*/

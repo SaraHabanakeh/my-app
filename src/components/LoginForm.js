@@ -1,17 +1,16 @@
 // LoginForm.js
 
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom'; //added uselocation
 import { handleLogin } from '../utils/auth.js';
 import { GraphQLClient, gql } from 'graphql-request';
-
-
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
     const navigate = useNavigate();
+    const location = useLocation(); // Access the location with state
 
     const client = new GraphQLClient('https://ssreditor-ebgyajbnfme3ddcv.northeurope-01.azurewebsites.net/graphql/auth', {
         headers: {
@@ -41,12 +40,14 @@ const LoginForm = () => {
             if (data.login) {
                 const userToken = data.login.token;
                 const userEmail = email;
-                //console.log(data.login)
 
                 handleLogin(userToken, userEmail);
 
+                // Redirect to the original page or default to /documents
+                const redirectUrl = location.state?.from?.pathname || '/documents';
+
                 setResponseMessage('Login successful!');
-                navigate('/documents');
+                navigate(redirectUrl); // Redirect after successful login
             } else {
                 setResponseMessage(data.login.message || 'Login failed. Please check your credentials.');
             }
